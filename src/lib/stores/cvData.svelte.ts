@@ -1,95 +1,133 @@
 // src/lib/stores/cvData.svelte.ts
-import type { Component } from 'svelte';
-import { Linkedin, Github, Mail, Phone, ExternalLink } from '@lucide/svelte';
 
-// Helper for icons if needed, though for CV, direct usage in components might be simpler
+// --- Imports ---
+// Component is needed for Svelte's dynamic components, especially for icons.
+import type { Component } from 'svelte';
+
+// Lucide Svelte provides a wide range of icons.
+// Import only the icons you plan to use to keep your bundle size small.
+import {
+    Linkedin, // LinkedIn icon
+    Github,   // GitHub icon
+    Mail,     // Email icon
+    Phone,    // Phone icon
+    ExternalLink // General external link icon (optional for projects)
+    // Add more Lucide icons as needed, e.g., GraduationCap, Code, Briefcase, etc.
+} from '@lucide/svelte';
+
+// --- Helper Functions ---
+
+/**
+ * Creates an IconDetail object for consistent icon usage across components.
+ * @param component The Svelte component for the icon (e.g., Mail, Github).
+ * @param className Optional CSS classes to apply to the icon (e.g., 'w-4 h-4 text-blue-500').
+ * @returns An IconDetail object.
+ */
+const createIcon = (component: Component, className: string = 'h-4 w-4'): IconDetail => ({ component, className });
+
+// --- Type Definitions for CV Data Structure ---
+// These interfaces ensure type-safety and provide a clear structure for your CV data.
+// Do not modify these unless you are changing the fundamental structure of your CV sections.
+
+/** Defines the structure for an icon, including its Svelte component and optional CSS classes. */
 export interface IconDetail {
     component: Component;
     className?: string;
 }
 
-const createIcon = (component: Component, className: string = 'h-4 w-4'): IconDetail => ({ component, className });
-
-// --- CV Data Types ---
-
+/** Represents a contact link in the header (email, phone, social media). */
 export interface ContactLink {
-    href: string;
-    text: string;
-    icon: IconDetail;
-    ariaLabel: string;
-    showText?: boolean; // To control if text like "LinkedIn" or just icon is shown
+    href: string; // The URL or contact method (e.g., "mailto:email", "tel:+123")
+    text: string; // The display text for the link (e.g., "your.email@example.com")
+    icon: IconDetail; // The icon associated with the link
+    ariaLabel: string; // Accessibility label for the link
+    showText?: boolean; // Optional: true to always show text, false to hide on web (show only icon)
 }
 
+/** Defines the data structure for the CV header section. */
 export interface HeaderData {
-    name: string;
-    title: string;
-    profileImage: string; // URL to your profile image
-    contacts: ContactLink[];
+    name: string; // Your full name
+    title: string; // Your main professional title/specialization
+    profileImage: string; // Path to your profile image (e.g., "/images/profile-photo.jpeg")
+    contacts: ContactLink[]; // Array of your contact links
 }
 
+/** Defines the data structure for the professional profile/summary section. */
 export interface ProfileData {
-    summary: string;
+    summary: string; // Your professional summary paragraph
 }
 
+/** Represents a single skill item within a skill category. */
 export interface Skill {
-    name: string; // e.g., "Rust (Axum, SQLx, Tokio/Hyper)"
+    name: string; // Name of the skill (e.g., "Rust (Axum, SQLx, Tokio/Hyper)")
 }
 
+/** Defines a category of skills (e.g., "Programming Languages", "DevOps"). */
 export interface SkillCategory {
-    title: string; // e.g., "Lenguajes de Programación"
-    skills: Skill[];
+    title: string; // Title of the skill category
+    skills: Skill[]; // Array of skills within this category
 }
 
+/** Defines the data structure for the skills section. */
 export interface SkillsData {
-    categories: SkillCategory[];
+    categories: SkillCategory[]; // Array of skill categories
 }
 
+/** Represents a single feature or bullet point within a project description. */
 export interface ProjectFeature {
-    text: string;
+    text: string; // The description text for the feature
 }
 
+/** Represents a sub-project or a specific component within a larger project. */
 export interface SubProject {
-    name: string;
-    githubUrl?: string;
-    description: string;
-    features: ProjectFeature[];
+    name: string; // Name of the sub-project
+    githubUrl?: string; // Optional: GitHub URL for the sub-project
+    description: string; // Short description of the sub-project
+    features: ProjectFeature[]; // Key features/contributions of the sub-project
 }
 
+/** Defines a single project entry in the projects section. */
 export interface ProjectEntry {
-    title: string;
-    githubUrl?: string;
-    websiteUrl?: string; // If there's a live version
-    description: string;
-    features?: ProjectFeature[];
-    subProjects?: SubProject[];
+    title: string; // Main title of the project
+    githubUrl?: string; // Optional: GitHub URL for the main project
+    websiteUrl?: string; // Optional: Live demo or project website URL
+    description: string; // Overview description of the project
+    features?: ProjectFeature[]; // Key features/contributions of the main project
+    subProjects?: SubProject[]; // Optional: Array of related sub-projects
 }
 
+/** Defines the data structure for the projects section. */
 export interface ProjectsData {
-    projects: ProjectEntry[];
+    projects: ProjectEntry[]; // Array of your highlighted projects
 }
 
+/** Defines a single education entry (degree, institution, period). */
 export interface EducationEntry {
-    institution: string;
-    degree: string;
-    period: string;
+    institution: string; // Name of the institution
+    degree: string; // Your degree or program
+    period: string; // The period of study (e.g., "2021 - Present")
 }
 
+/** Defines the data structure for the education section. */
 export interface EducationData {
-    entries: EducationEntry[];
+    entries: EducationEntry[]; // Array of your education entries
 }
 
+/** Defines a single language entry (language, proficiency level, progress). */
 export interface LanguageEntry {
-    language: string;
-    level: string; // e.g., "Nativo", "B2"
-    proficiencyPercent: number; // For a visual bar, 0-100
+    language: string; // Name of the language (e.g., "Spanish")
+    level: string; // Proficiency level (e.g., "Native", "B2", "Fluent")
+    proficiencyPercent: number; // Percentage for a visual progress bar (0-100)
 }
 
+/** Defines the data structure for the languages section. */
 export interface LanguagesData {
-    entries: LanguageEntry[];
+    entries: LanguageEntry[]; // Array of language entries
 }
 
+/** The overall structure for all CV data. */
 export interface CVData {
-    siteTitle: string;
+    siteTitle: string; // Title for the browser tab (HTML <title> tag)
     header: HeaderData;
     profile: ProfileData;
     skills: SkillsData;
@@ -97,130 +135,180 @@ export interface CVData {
     education: EducationData;
     languages: LanguagesData;
     footer: {
-        referencesText: string;
-        copyrightName: string;
+        referencesText: string; // Text about references (e.g., "References available upon request")
+        copyrightName: string; // Your name for copyright/document ownership
     }
 }
 
-// --- Actual CV Data ---
+// --- Main CV Data Store ---
+// This is where you will input all your personal CV information.
+// Modify the 'cv' object below with your details.
+
 class CvDataStore {
     cv: CVData = $state({
-        siteTitle: "CV de Fernando Bryan Reza Campos",
+        // --- General Website Title ---
+        siteTitle: "Your Name - Curriculum Vitae", // Appears in browser tab
+
+        // --- Header Section Data ---
         header: {
-            name: "FERNANDO BRYAN REZA CAMPOS",
-            title: "Desarrollador Full-Stack | Especialista en Rust y APIs",
-            profileImage: "/images/profile-photo.jpg", // Ensure this image is in static/images
+            name: "YOUR FULL NAME", // Your full name, often in uppercase
+            title: "Your Professional Title | Your Specialty", // E.g., "Software Engineer | Full-Stack Developer"
+            profileImage: "/images/generic-male.jpeg", // Path to your profile image (ensure it exists in 'static/images/')
             contacts: [
-                { href: "mailto:fer.rezac@outlook.com", text: "fer.rezac@outlook.com", icon: createIcon(Mail), ariaLabel: "Email", showText: true },
-                { href: "tel:+527226457999", text: "+52 (722) 645 7999", icon: createIcon(Phone), ariaLabel: "Phone", showText: true },
-                { href: "https://www.linkedin.com/in/fernando-reza-campos/", text: "LinkedIn", icon: createIcon(Linkedin), ariaLabel: "LinkedIn Profile", showText: false },
-                { href: "https://github.com/Yrrrrrf", text: "GitHub", icon: createIcon(Github), ariaLabel: "GitHub Profile", showText: false },
+                {
+                    href: "mailto:your.email@example.com",
+                    text: "your.email@example.com",
+                    icon: createIcon(Mail),
+                    ariaLabel: "Email Address",
+                    showText: true // Set to true to show the email text beside the icon
+                },
+                {
+                    href: "tel:+1234567890",
+                    text: "+1 (234) 567 890",
+                    icon: createIcon(Phone),
+                    ariaLabel: "Phone Number",
+                    showText: true // Set to true to show the phone number text beside the icon
+                },
+                {
+                    href: "https://www.linkedin.com/in/yourprofile/",
+                    text: "LinkedIn",
+                    icon: createIcon(Linkedin),
+                    ariaLabel: "LinkedIn Profile",
+                    showText: false // Set to false to hide text on web, show only icon (text appears on print)
+                },
+                {
+                    href: "https://github.com/yourusername",
+                    text: "GitHub",
+                    icon: createIcon(Github),
+                    ariaLabel: "GitHub Profile",
+                    showText: false // Set to false to hide text on web, show only icon (text appears on print)
+                },
+                // Add more contact links as needed
+                // { href: "https://yourwebsite.com", text: "Portfolio", icon: createIcon(ExternalLink), ariaLabel: "Personal Portfolio", showText: false }
             ]
         },
+
+        // --- Professional Profile Section Data ---
         profile: {
-            summary: "Desarrollador de software especializado en arquitecturas de API de alto rendimiento y microservicios en la nube. Creador del ecosistema Prism para generación automática de APIs desde esquemas de base de datos. Experiencia en Rust, Python y TypeScript, con enfoque en programación asíncrona y despliegue de aplicaciones en entornos cloud con Kubernetes."
+            summary: "A concise summary of your professional background, key skills, and career aspirations. Highlight your expertise and what makes you a valuable candidate. This text should be 3-5 sentences long."
         },
+
+        // --- Technical Skills Section Data ---
         skills: {
             categories: [
                 {
-                    title: "Lenguajes de Programación",
+                    title: "Programming Languages",
                     skills: [
-                        { name: "Rust (Axum, SQLx, Tokio/Hyper)" },
-                        { name: "Python (FastAPI, SQLAlchemy)" },
-                        { name: "TypeScript/JavaScript" },
-                        { name: "SQL (PostgreSQL, MySQL)" }
+                        { name: "Language 1 (Frameworks, Libraries)" },
+                        { name: "Language 2 (Frameworks, Libraries)" },
+                        { name: "Language 3" },
+                        { name: "Database Language (e.g., SQL)" }
                     ]
                 },
                 {
-                    title: "Infraestructura & DevOps",
+                    title: "Infrastructure & DevOps",
                     skills: [
-                        { name: "Docker & Kubernetes" },
-                        { name: "CI/CD pipelines" },
-                        { name: "Cloud Platforms (GCP, AWS)" },
-                        { name: "Git & Control de Versiones" }
+                        { name: "Containerization (Docker, Kubernetes)" },
+                        { name: "CI/CD Platforms (e.g., GitHub Actions, Jenkins)" },
+                        { name: "Cloud Platforms (e.g., AWS, GCP, Azure)" },
+                        { name: "Version Control (Git)" }
                     ]
                 },
                 {
-                    title: "Arquitectura & Diseño",
+                    title: "Architecture & Design",
                     skills: [
-                        { name: "Microservicios" },
-                        { name: "APIs RESTful" },
-                        { name: "Arquitecturas Tipo-Seguras" },
-                        { name: "Procesamiento Asíncrono" }
+                        { name: "Microservices" },
+                        { name: "RESTful APIs" },
+                        { name: "Type-Safe Architectures" },
+                        { name: "Asynchronous Processing" }
                     ]
-                }
+                },
+                // Add more skill categories as relevant (e.g., "Frontend Frameworks", "Backend Frameworks", "Tools")
             ]
         },
+
+        // --- Featured Projects Section Data ---
         projects: {
             projects: [
                 {
-                    title: "Ecosistema Prism",
-                    description: "Generación automática de APIs desde esquemas de base de datos y cliente tipo-seguro.",
-                    subProjects: [
+                    title: "Example Project 1: Dynamic Data Platform",
+                    githubUrl: "https://github.com/yourusername/example-project-1", // Optional
+                    websiteUrl: "https://example-project-1-live.com", // Optional
+                    description: "A brief description of this project's purpose and impact. This could be a web app, a system, or a significant contribution.",
+                    features: [
+                        { text: "Developed feature X using Technology A, leading to result Y." },
+                        { text: "Implemented functionality B with Framework C, improving D." },
+                        { text: "Contributed to Z, showcasing skill M and N." }
+                    ],
+                    subProjects: [ // Use subProjects for larger ecosystems or related components
                         {
-                            name: "prismatic (Rust)",
-                            githubUrl: "https://github.com/Yrrrrrf/prismatic",
-                            description: "API REST con Axum y SQLx, enfoque en rendimiento.",
+                            name: "Sub-project Alpha",
+                            githubUrl: "https://github.com/yourusername/sub-project-alpha",
+                            description: "Focus on a specific component or aspect of the main project.",
                             features: [
-                                { text: "Arquitectura para deployments en contenedores." },
-                                { text: "Implementación de prism-py en Rust para aumentar seguridad y velocidad." }
+                                { text: "Designed and built component ABC for data processing." },
+                                { text: "Optimized performance of module XYZ by P%." }
                             ]
                         },
-                        {
-                            name: "prism-py (Python)",
-                            githubUrl: "https://github.com/Yrrrrrf/prism-py",
-                            description: "FastAPI para generar APIs desde esquemas DB.",
-                            features: [
-                                { text: "Sistema de tipos para seguridad en runtime." },
-                                { text: "Generación automática de rutas." }
-                            ]
-                        },
-                        {
-                            name: "prism-ts (TypeScript)",
-                            githubUrl: "https://github.com/Yrrrrrf/prism-ts",
-                            description: "Cliente tipo-seguro para APIs.",
-                            features: [ { text: "Generación automática de tipos." } ]
-                        }
+                        // Add more sub-projects as needed
                     ]
                 },
                 {
-                    title: "Sonar",
-                    githubUrl: "https://github.com/Yrrrrrf/sonar",
-                    description: "Protocolo de transferencia de datos basado en audio (Rust).",
+                    title: "Example Project 2: Mobile Utility App",
+                    githubUrl: "https://github.com/yourusername/example-project-2",
+                    description: "This project demonstrates your skills in a different domain, perhaps mobile development or a specific algorithm.",
                     features: [
-                        { text: "Procesamiento de señales en tiempo real." },
-                        { text: "Codificación bit a bit y manejo de errores con CRC." }
+                        { text: "Applied advanced algorithm for real-time data analysis." },
+                        { text: "Created a user-friendly interface with modern UI/UX principles." },
+                        { text: "Managed end-to-end development cycle from concept to deployment." }
                     ]
                 },
-                {
-                    title: "General Web App (GWA)",
-                    githubUrl: "https://github.com/Yrrrrrf/gwa",
-                    description: "Plantilla full-stack para desarrollo rápido.",
-                    features: [
-                        { text: "Integración del ecosistema Prism." },
-                        { text: "Implementación con Deno, SvelteKit y PostgreSQL." }
-                    ]
-                }
+                // Add more projects to showcase your diverse experience.
+                // If a project doesn't have a sub-project, just use the 'features' array directly.
             ]
         },
+
+        // --- Education Section Data ---
         education: {
             entries: [
-                { institution: "Universidad Autónoma del Estado de México", degree: "Ingeniería en Computación", period: "2021 - Presente" },
-                { institution: "ESIME Culhuacán", degree: "Ingeniería Mecánica", period: "2017 - 2020" },
-                { institution: "CECyT 4 Lazaro Cardenas", degree: "Técnico en Instalaciones Eléctricas", period: "2014 - 2017" }
+                {
+                    institution: "University Name, City",
+                    degree: "Your Degree | Major",
+                    period: "Start Year - End Year (or Present)"
+                },
+                {
+                    institution: "Another Institution (e.g., College, Technical School)",
+                    degree: "Your Diploma/Certificate | Field of Study",
+                    period: "Start Year - End Year"
+                },
+                // Add more education entries chronologically
             ]
         },
+
+        // --- Languages Section Data ---
         languages: {
             entries: [
-                { language: "Español", level: "Nativo", proficiencyPercent: 100 },
-                { language: "Inglés", level: "B2", proficiencyPercent: 75 }
+                {
+                    language: "Your Native Language",
+                    level: "Native", // Or "Fluent", "Conversational"
+                    proficiencyPercent: 100 // 0-100 for the progress bar
+                },
+                {
+                    language: "Another Language (e.g., English)",
+                    level: "Proficiency Level (e.g., B2, Advanced)",
+                    proficiencyPercent: 75 // Adjust based on your actual proficiency
+                },
+                // Add more languages as relevant
             ]
         },
+
+        // --- Footer Section Data ---
         footer: {
-            referencesText: "Referencias disponibles a solicitud",
-            copyrightName: "Fernando Bryan Reza Campos"
+            referencesText: "References available upon request", // Standard CV closing text
+            copyrightName: "Your Full Name" // Name for copyright/document ownership in the footer
         }
     });
 }
 
+// Export a singleton instance of the store for use in your Svelte components.
 export const cvDataStore = new CvDataStore();
