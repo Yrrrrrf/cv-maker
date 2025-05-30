@@ -90,16 +90,16 @@ The core of this generator is its data-driven nature. To update your CV:
     *   Update the `cv` object within `CvDataStore`.
     *   Modify fields in `header`, `profile`, `skills`, `projects`, `education`, and `languages` with your personal information.
     *   The types for each data structure are defined within this file (e.g., `HeaderData`, `ProjectEntry`). Ensure your data conforms to these types.
-    *   For icons (e.g., contact links), ensure they are imported from `lucide-svelte` and potentially wrapped with the `createIcon` helper if you use it.
+    *   For icons (e.g., contact links), ensure they are imported from [`lucide-svelte`](https://lucide.dev/guide/packages/lucide-svelte) and potentially wrapped with the `createIcon` helper if you use it.
 
 2.  **Static Assets (Profile Photo):**
-    *   Place your profile photo (e.g., [`profile-photo.jpg`](static/images/profile-photo.jpg)) in the [`static/images/`](static/images/) directory.
-    *   Ensure the path in `cvData.svelte.ts` (e.g., `header.profileImage: "/images/profile-photo.jpg"`) correctly points to this image.
+    *   Place your profile photo (e.g., [`generic-male.jpeg`](static/images/generic-male.jpeg)) in the [`static/images/`](static/images/) directory.
+    *   Ensure the path in `cvData.svelte.ts` (e.g., `header.profileImage: "/images/generic-male.jpeg"`) correctly points to this image.
 
 3.  **Styling (Optional):**
-    *   **Global Styles:** Modify `src/app.html` for global HTML attributes or `src/global.css` (if you create one beyond Tailwind's base) for CSS overrides.
-    *   **TailwindCSS:** Adjust utility classes directly within Svelte components (`src/lib/components/*.svelte`) or in `src/routes/+page.svelte` for layout and print-specific styles.
-    *   **Print Styles:** Fine-tune print-specific CSS within the `<style lang="postcss">` block in `src/routes/+page.svelte`.
+    *   **Global Styles:** Modify [`src/app.html`](src/app.html) for global HTML attributes or [`src/global.css`](src/global.css) (if you create one beyond Tailwind's base) for CSS overrides.
+    *   **TailwindCSS:** Adjust utility classes directly within Svelte components ([`src/lib/components/*.svelte`](src/lib/components/)) or in [`src/routes/+page.svelte`](src/routes/+page.svelte) for layout and print-specific styles.
+    *   **Print Styles:** Fine-tune print-specific CSS within the `<style lang="postcss">` block in [`src/routes/+page.svelte`](src/routes/+page.svelte).
 
 ## 📄 License
 
