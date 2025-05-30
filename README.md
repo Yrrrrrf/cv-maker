@@ -1,19 +1,18 @@
 <h1 align="center">
   <!-- Consider adding a simple icon for your CV generator here if you have one -->
-  <!-- <img src="./static/cv-icon.png" alt="Svelte CV Generator Icon" width="128" height="128"> -->
-  <div align="center">Svelte CV Generator</div>
+  <img src="./static/cv.png" alt="Svelte CV Maker Icon" width="128" height="128">
+  <div align="center">CV Maker</div>
 </h1>
 
 <div align="center">
-  <!-- Optional: Add badges if you plan to version it or host it on GitHub -->
-  <!-- [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](...) -->
-  <!-- [![GitHub: Svelte CV Generator](https://img.shields.io/badge/GitHub-Svelte%20CV%20Generator-181717?logo=github)](...) -->
-  <!-- [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) -->
+
+[![GitHub: CV Maker](https://img.shields.io/badge/GitHub-CV%20Maker-181717?logo=github)](https://github.com/Yrrrrrf/svelte-cv-maker)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
 </div>
 
 ## 🚀 Overview
 
-The **Svelte CV Generator** is a SvelteKit-based project designed for easily creating and maintaining a professional, modern, and printable Curriculum Vitae (CV). It leverages a data-driven approach, allowing you to manage all CV content from a centralized Svelte store, making updates quick and straightforward without needing to modify component logic.
+The **CV Maker** is a SvelteKit-based project designed for easily creating and maintaining a professional, modern, and printable Curriculum Vitae (CV). It leverages a data-driven approach, allowing you to manage all CV content from a centralized Svelte store, making updates quick and straightforward without needing to modify component logic.
 
 Inspired by dynamic presentation templates, this project separates CV **data** (personal details, experience, skills, education, etc.) from the **presentation logic** (Svelte components that render the data). This makes it highly adaptable and easy to keep your CV up-to-date.
 
@@ -100,6 +99,12 @@ The core of this generator is its data-driven nature. To update your CV:
     *   **Global Styles:** Modify [`src/app.html`](src/app.html) for global HTML attributes or [`src/global.css`](src/global.css) (if you create one beyond Tailwind's base) for CSS overrides.
     *   **TailwindCSS:** Adjust utility classes directly within Svelte components ([`src/lib/components/*.svelte`](src/lib/components/)) or in [`src/routes/+page.svelte`](src/routes/+page.svelte) for layout and print-specific styles.
     *   **Print Styles:** Fine-tune print-specific CSS within the `<style lang="postcss">` block in [`src/routes/+page.svelte`](src/routes/+page.svelte).
+
+## Visual [Example](examples/cv-generic-male.pdf)
+
+<div align="center">
+  <img src="./static/generic-example.png" alt="Generic CV Example" width="600">
+</div>
 
 ## 📄 License
 
