@@ -1,49 +1,64 @@
 // src/lib/stores/aiCvGeneratorStore.svelte.ts
 import type { Component } from 'svelte';
-import { User, Briefcase } from '@lucide/svelte'; // Icons for step definitions
+import { User, Briefcase, Github, Linkedin, Link as LinkIcon } from '@lucide/svelte';
 
-// --- Type Definitions (can be co-located or imported) ---
+// --- Type Definitions ---
+export type ProfileSourceType = string; // This will be 'github', 'linkedin', 'other', etc.
+
 export type ProfileSource = {
 	id: string;
-	type: 'github' | 'linkedin' | 'other';
+	type: ProfileSourceType;
 	value: string;
 };
 
 export type JobInputType = 'url' | 'text';
+
+// --- Profile Options Definition (Source of Truth) ---
+export interface ProfileOptionConfig {
+    type: ProfileSourceType; // The unique identifier for this profile type (e.g., 'github', 'linkedin', 'other')
+    name: string;            // User-friendly name for the dropdown (e.g., "GitHub", "LinkedIn", "Other URL")
+    icon: Component;         // Icon for the input field
+    placeholder: string;     // Placeholder text for the input
+}
+
+// This list defines all available profile source types.
+// The 'other' type is implicitly treated as non-unique by the component logic.
+export const profileOptionsList: ProfileOptionConfig[] = [
+    { type: 'github', name: 'GitHub', icon: Github, placeholder: 'e.g., octocat or full URL' },
+    { type: 'linkedin', name: 'LinkedIn', icon: Linkedin, placeholder: 'e.g., your-linkedin-profile-url' },
+    { type: 'other', name: 'Other URL', icon: LinkIcon, placeholder: 'https://example.com/portfolio' }
+    // To add a new profile type (e.g., 'twitter'), just add an entry here.
+    // If it's not 'other', it will be treated as unique by ProfileSources.svelte.
+];
+
 
 // Define the structure for each step in the generator
 export interface StepDefinition {
 	id: number;
 	title: string;
 	icon: Component;
-	isValid: (state: AiCvGeneratorState) => boolean; // Validation function for the step
+	isValid: (state: AiCvGeneratorState) => boolean;
 }
 
-// Define the overall state managed by the store
 export interface AiCvGeneratorState {
 	currentStep: number;
 	profileSources: ProfileSource[];
 	manualProfessionalSummary: string;
 	jobInputType: JobInputType;
 	jobTargetValue: string;
-
-	// Generation status
 	isGenerating: boolean;
-	generationStepText: string; // Renamed from generationStep to avoid conflict
+	generationStepText: string;
 	generationProgress: number;
 	showSuccess: boolean;
 	errorMessage: string;
-
-    // App-level state
-    showGenerator: boolean; // To control visibility of the entire generator UI
+    showGenerator: boolean;
 }
 
-// --- Example Data (moved into the store for easier management) ---
 const exampleData = {
 	profileSources: [
-		{ id: crypto.randomUUID(), type: 'github' as ProfileSource['type'], value: 'yrrrrrf' },
-		{ id: crypto.randomUUID(), type: 'linkedin' as ProfileSource['type'], value: 'https://www.linkedin.com/in/fernando-reza-campos/' },
-		{ id: crypto.randomUUID(), type: 'other' as ProfileSource['type'], value: 'https://yrrrrrf.com' }
+		{ id: crypto.randomUUID(), type: 'github', value: 'yrrrrrf' }, // Matches profileOptionsList[0].type
+		{ id: crypto.randomUUID(), type: 'linkedin', value: 'https://www.linkedin.com/in/fernando-reza-campos/' }, // Matches profileOptionsList[1].type
+		{ id: crypto.randomUUID(), type: 'other', value: 'https://yrrrrrf.com' } // Matches profileOptionsList[2].type
 	],
 	manualProfessionalSummary: `Highly motivated Senior Software Engineer with 7+ years of experience in building scalable web applications. Proven ability to lead cross-functional teams, implement robust backend services using Node.js and Rust, and deliver intuitive user interfaces with Svelte and React. Passionate about cloud-native solutions (AWS, GCP) and improving developer workflows through CI/CD best practices. Seeking to leverage deep technical expertise and leadership skills to drive impactful projects at a forward-thinking tech company.`,
 	jobDescription: `Senior Full Stack Developer - Tech Company
@@ -65,13 +80,10 @@ Responsibilities:
 	jobUrl: 'https://careers.example.com/job/senior-fullstack-dev-12345'
 };
 
-
-// --- Store Implementation ---
 class AiCvGeneratorStore {
-	// Reactive state using $state
 	#state = $state<AiCvGeneratorState>({
 		currentStep: 1,
-		profileSources: [{ id: crypto.randomUUID(), type: 'github', value: '' }],
+		profileSources: [{ id: crypto.randomUUID(), type: profileOptionsList[0]?.type || 'other', value: '' }],
 		manualProfessionalSummary: '',
 		jobInputType: 'text',
 		jobTargetValue: '',
@@ -80,10 +92,9 @@ class AiCvGeneratorStore {
 		generationProgress: 0,
 		showSuccess: false,
 		errorMessage: '',
-        showGenerator: true, // Initially show the generator
+        showGenerator: true,
 	});
 
-	// Step definitions - can be expanded
 	steps: StepDefinition[] = [
 		{
 			id: 1,
@@ -92,7 +103,6 @@ class AiCvGeneratorStore {
 			isValid: (state) => {
 				const hasValidSource = state.profileSources.some(s => s.value.trim() !== '');
 				const hasManualSummary = state.manualProfessionalSummary.trim() !== '';
-				// console.log(`Step 1 Validation: hasValidSource=${hasValidSource} (from ${state.profileSources.length} sources), hasManualSummary=${hasManualSummary}`);
 				return hasValidSource || hasManualSummary;
 			}
 		},
@@ -104,7 +114,6 @@ class AiCvGeneratorStore {
 		}
 	];
 
-	// --- Getters for derived state ---
 	get state() {
 		return this.#state;
 	}
@@ -114,26 +123,18 @@ class AiCvGeneratorStore {
 	}
 
     get currentStepDefinition() {
-        // Ensure currentStep is within bounds
         if (this.#state.currentStep > 0 && this.#state.currentStep <= this.steps.length) {
             return this.steps[this.#state.currentStep - 1];
         }
-        return undefined; // Or handle error appropriately
+        return undefined;
     }
 
 	get isNextButtonDisabled() {
-		// console.log('Store: Checking isNextButtonDisabled. Current step:', this.#state.currentStep);
 		const stepDef = this.currentStepDefinition;
-		if (!stepDef) {
-			// console.log('Store: No currentStepDefinition, next disabled.');
-			return true; // Disable if no valid step definition
-		}
-		const valid = stepDef.isValid(this.#state);
-		// console.log(`Store: Step ${this.#state.currentStep} isValid: ${valid}. Next button disabled: ${!valid}`);
-		return !valid;
+		if (!stepDef) return true;
+		return !stepDef.isValid(this.#state);
 	}
 
-	// --- Actions (Mutators) ---
 	nextStep() {
         const stepDef = this.currentStepDefinition;
 		if (!stepDef || !stepDef.isValid(this.#state)) {
@@ -153,18 +154,17 @@ class AiCvGeneratorStore {
 		}
 	}
 
-    // Profile Sources Management
     addProfileSource() {
-        // console.log('addProfileSource called in store. Profile sources length before:', this.#state.profileSources.length);
+        // Add a new source, defaulting to 'other' as it's always allowed.
+        // Or, could default to the first non-unique type if more were added.
         this.#state.profileSources = [...this.#state.profileSources, { id: crypto.randomUUID(), type: 'other', value: '' }];
-        // console.log('addProfileSource called in store. Profile sources length after:', this.#state.profileSources.length);
     }
 
     removeProfileSource(idToRemove: string) {
         this.#state.profileSources = this.#state.profileSources.filter(source => source.id !== idToRemove);
     }
 
-    updateProfileSource(idToUpdate: string, newType?: ProfileSource['type'], newValue?: string) {
+    updateProfileSource(idToUpdate: string, newType?: ProfileSourceType, newValue?: string) {
         this.#state.profileSources = this.#state.profileSources.map(source => {
             if (source.id === idToUpdate) {
                 return {
@@ -181,20 +181,17 @@ class AiCvGeneratorStore {
         this.#state.manualProfessionalSummary = summary;
     }
 
-    // Job Target Management
     updateJobInputType(type: JobInputType) {
         this.#state.jobInputType = type;
-        this.#state.jobTargetValue = ''; // Clear value when type changes
+        this.#state.jobTargetValue = '';
     }
 
     updateJobTargetValue(value: string) {
         this.#state.jobTargetValue = value;
     }
 
-
-	// --- Data & Generation Flow ---
 	fillExampleData() {
-		this.#state.profileSources = exampleData.profileSources.map(s => ({...s, id: crypto.randomUUID()})); // ensure unique ids
+		this.#state.profileSources = exampleData.profileSources.map(s => ({...s, id: crypto.randomUUID()}));
 		this.#state.manualProfessionalSummary = exampleData.manualProfessionalSummary;
 		this.#state.jobInputType = 'text';
 		this.#state.jobTargetValue = exampleData.jobDescription;
@@ -202,13 +199,14 @@ class AiCvGeneratorStore {
 	}
 
 	clearAllData() {
+        // When clearing, set to one 'other' type source, as it's always non-unique
 		this.#state.profileSources = [{ id: crypto.randomUUID(), type: 'other', value: '' }];
 		this.#state.manualProfessionalSummary = '';
 		this.#state.jobInputType = 'text';
 		this.#state.jobTargetValue = '';
 		this.#state.currentStep = 1;
 		this.resetGenerationStatus();
-        this.#state.showGenerator = true; // Ensure generator is shown
+        this.#state.showGenerator = true;
 	}
 
     resetGenerationStatus() {
@@ -228,7 +226,6 @@ class AiCvGeneratorStore {
 		this.resetGenerationStatus();
 		this.#state.isGenerating = true;
 
-		// Simulate AI generation (replace with actual API calls later)
 		const simulationSteps = [
             { text: 'Analyzing profile data from sources...', duration: 1000 },
             { text: 'Processing manual professional summary...', duration: 800 },
@@ -246,7 +243,6 @@ class AiCvGeneratorStore {
 			if (currentSimulationStepIndex < simulationSteps.length) {
 				const step = simulationSteps[currentSimulationStepIndex];
 				this.#state.generationStepText = step.text;
-
 				setTimeout(() => {
                     elapsedTime += step.duration;
                     this.#state.generationProgress = Math.min((elapsedTime / totalDuration) * 100, 100);
@@ -259,22 +255,18 @@ class AiCvGeneratorStore {
 					this.#state.showSuccess = true;
 					this.#state.generationStepText = 'CV generated successfully!';
 					this.#state.generationProgress = 100;
-                    // In a real app, this is where you'd get the CV data and potentially update the main cvDataStore
 				}, 500);
 			}
 		};
 		processStep();
 	}
 
-    // Call this when user clicks "View Generated CV"
     handleViewGeneratedCv() {
-        this.#state.showGenerator = false; // Hide generator, parent page should show CV
-        // this.resetGenerationStatus(); // Optionally reset status for next time
+        this.#state.showGenerator = false;
     }
 
-    // Call this when user clicks "Generate Another"
     handleGenerateAnother() {
-        this.clearAllData(); // Resets everything and ensures showGenerator is true
+        this.clearAllData();
     }
 }
 

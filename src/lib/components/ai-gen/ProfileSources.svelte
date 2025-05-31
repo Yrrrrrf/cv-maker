@@ -1,33 +1,17 @@
 <!-- src/lib/components/ai-gen/ProfileSources.svelte -->
 <script lang="ts">
-    import { Github, Linkedin, Link as LinkIcon, PlusCircle, MinusCircle, User } from '@lucide/svelte';
-    import type { Component } from 'svelte';
-    import { aiCvGeneratorStore, type ProfileSource } from '$lib/stores/aiCvGeneratorStore.svelte';
+    import { PlusCircle, MinusCircle, User } from '@lucide/svelte';
+    import { aiCvGeneratorStore, type ProfileSource, type ProfileSourceType, profileOptionsList, type ProfileOptionConfig } from '$lib/stores/aiCvGeneratorStore.svelte';
 
     const store = aiCvGeneratorStore;
     let sources = $derived(store.state.profileSources);
     let manualSummary = $derived(store.state.manualProfessionalSummary);
 
-    // $effect(() => {
-    //     console.log('ProfileSources: sources array updated:', JSON.stringify(sources));
-    // });
-
-    interface ProfileOption {
-        type: ProfileSource['type'];
-        name: string;
-        icon: Component;
-    }
-
-    const profileOptions: ProfileOption[] = [
-        { type: 'github', name: 'GitHub', icon: Github },
-        { type: 'linkedin', name: 'LinkedIn', icon: Linkedin },
-        { type: 'other', name: 'Other URL', icon: LinkIcon }
-    ];
-
     let usedUniqueTypes = $derived(() => {
-        const types = new Set<ProfileSource['type']>();
+        const types = new Set<ProfileSourceType>();
         sources.forEach(source => {
-            if (source.type === 'github' || source.type === 'linkedin') {
+            const optionConfig = profileOptionsList.find(opt => opt.type === source.type);
+            if (optionConfig && optionConfig.type !== 'other') {
                 types.add(source.type);
             }
         });
@@ -36,39 +20,35 @@
 
     function handleSourceTypeChange(event: Event, id: string) {
         const targetSelectElement = event.currentTarget as HTMLSelectElement;
-        const newType = targetSelectElement.value as ProfileSource['type'];
+        const newType = targetSelectElement.value as ProfileSourceType;
         const currentSource = sources.find(s => s.id === id);
 
         if (!currentSource) return;
         const previousType = currentSource.type;
 
-        if (
-            (newType === 'github' || newType === 'linkedin') &&
-            usedUniqueTypes().has(newType) && // Calling derived as a function
-            previousType !== newType
-        ) {
-            // console.warn(`Type ${newType} is already in use. Reverting.`);
+        const isNewTypeUniqueAndInUse = newType !== 'other' && usedUniqueTypes().has(newType);
+
+        if (isNewTypeUniqueAndInUse && previousType !== newType) {
             targetSelectElement.value = previousType;
             return;
         }
-        store.updateProfileSource(id, newType, undefined /* Keep current value */);
+        store.updateProfileSource(id, newType, undefined);
     }
 
     function handleSourceValueInput(event: Event, id: string) {
         const inputValue = (event.currentTarget as HTMLInputElement).value;
-        store.updateProfileSource(id, undefined /* Keep current type */, inputValue);
+        store.updateProfileSource(id, undefined, inputValue);
     }
 
     function handleManualSummaryInput(event: Event) {
         store.updateManualSummary((event.currentTarget as HTMLTextAreaElement).value);
     }
-
 </script>
 
 <div class="space-y-8 animate-slide-in">
     <div class="space-y-6">
         <div class="flex items-center space-x-3">
-            <LinkIcon class="w-6 h-6 text-gray-700" />
+            <svelte:component this={profileOptionsList.find(opt => opt.type === 'other')?.icon || User} class="w-6 h-6 text-gray-700" />
             <h2 class="text-2xl font-semibold text-gray-800">Profile Links (for AI Analysis)</h2>
         </div>
 
@@ -79,38 +59,38 @@
                 </p>
             {/if}
             {#each sources as source (source.id)}
+                {@const currentOptionConfig = profileOptionsList.find(opt => opt.type === source.type)}
+                <!-- The div is now a sibling to {@const}, both children of #each -->
                 <div class="flex items-center gap-2">
                     <select
                         class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors w-40 flex-shrink-0"
                         value={source.type}
                         onchange={(e) => handleSourceTypeChange(e, source.id)}
                     >
-                        {#each profileOptions as option}
+                        {#each profileOptionsList as optionConfig (optionConfig.type)}
                             <option
-                                value={option.type}
+                                value={optionConfig.type}
                                 disabled={
-                                    (option.type === 'github' || option.type === 'linkedin') &&
-                                    usedUniqueTypes().has(option.type) && // Calling derived as a function
-                                    source.type !== option.type
+                                    optionConfig.type !== 'other' &&
+                                    usedUniqueTypes().has(optionConfig.type) &&
+                                    source.type !== optionConfig.type
                                 }
                             >
-                                {option.name}
+                                {optionConfig.name}
                             </option>
                         {/each}
                     </select>
                     <div class="relative flex-grow">
                         <input
                             type="text"
-                            placeholder={source.type === 'github' ? 'e.g., octocat' : 'https://example.com/profile'}
+                            placeholder={currentOptionConfig?.placeholder || 'Enter value'}
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors pl-12"
                             value={source.value}
                             oninput={(e) => handleSourceValueInput(e, source.id)}
                         />
-                        {#each profileOptions as option}
-                            {#if option.type === source.type}
-                                <svelte:component this={option.icon} class="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                            {/if}
-                        {/each}
+                        {#if currentOptionConfig?.icon}
+                            <svelte:component this={currentOptionConfig.icon} class="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        {/if}
                     </div>
                     <button
                         type="button"
@@ -162,7 +142,7 @@
                     oninput={handleManualSummaryInput}
                 ></textarea>
                 <p class="mt-2 text-sm text-gray-500">
-                    This content will be prioritized and combined with data from your links. The more detail you provide, the better.
+                    <strong>This content will be prioritized</strong> and combined with data from your links. The more detail you provide, the better.
                 </p>
             </div>
         </div>
