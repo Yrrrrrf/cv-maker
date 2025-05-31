@@ -7,6 +7,7 @@
 	import Education from '$lib/components/Education.svelte';
 	import Languages from '$lib/components/Languages.svelte';
     import { onMount } from 'svelte';
+    import CvGenerator from '$lib/components/ai-gen/CVGenerator.svelte';
 
     const cv = cvDataStore.cv;
     const currentDate = new Date().toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -141,6 +142,8 @@
       }
     </style>
 </svelte:head>
+
+<CvGenerator />
 
 <div class="max-w-5xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden print:shadow-none cv-container">
     <Header data={cv.header} />
