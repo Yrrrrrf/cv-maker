@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { ProjectsData, ProjectEntry, SubProject } from '$lib/stores/cvData.svelte.ts';
+    import type { ProjectsData } from '$lib/types/cv';
     import { Github, ExternalLink } from '@lucide/svelte';
     let { data }: { data: ProjectsData } = $props();
 </script>

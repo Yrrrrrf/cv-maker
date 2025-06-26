@@ -8,49 +8,68 @@
 
 [![GitHub: CV Maker](https://img.shields.io/badge/GitHub-CV%20Maker-181717?logo=github)](https://github.com/Yrrrrrf/svelte-cv-maker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
+
 </div>
 
 ## 🚀 Overview
 
-The **CV Maker** is a SvelteKit-based project designed for easily creating and maintaining a professional, modern, and printable Curriculum Vitae (CV). It leverages a data-driven approach, allowing you to manage all CV content from a centralized Svelte store, making updates quick and straightforward without needing to modify component logic.
+The **CV Maker** is a SvelteKit-based project designed for easily creating and maintaining a
+professional, modern, and printable Curriculum Vitae (CV). It leverages a data-driven approach,
+allowing you to manage all CV content from a centralized Svelte store, making updates quick and
+straightforward without needing to modify component logic.
 
-Inspired by dynamic presentation templates, this project separates CV **data** (personal details, experience, skills, education, etc.) from the **presentation logic** (Svelte components that render the data). This makes it highly adaptable and easy to keep your CV up-to-date.
+Inspired by dynamic presentation templates, this project separates CV **data** (personal
+details, experience, skills, education, etc.) from the **presentation logic** (Svelte components
+that render the data). This makes it highly adaptable and easy to keep your CV up-to-date.
 
 ## ✨ Features
 
--   **Data-Driven Content:** Manage all CV information (name, title, contact, profile, skills, projects, education, languages) from a single, type-safe TypeScript store (`src/lib/stores/cvData.svelte.ts`).
--   **Component-Based Structure:** Each section of the CV (Header, Profile, Skills, Projects, etc.) is a reusable Svelte component.
--   **Modern Styling with TailwindCSS:** Utilizes TailwindCSS for a utility-first approach to styling, ensuring a clean and professional look.
--   **Print-Optimized Output:** Generates a CV that is well-formatted for printing, including considerations for A4 paper and printer-friendly styles.
--   **Svelte 5 & Runes:** Built with the latest Svelte 5 features for optimal reactivity and component architecture.
--   **TypeScript Integration:** Full type safety for CV data, ensuring consistency and easier refactoring.
--   **Easy to Customize & Extend:** The data store structure and component design make it simple to add new sections or modify existing ones.
--   **Based on [GWA Template](https://github.com/Yrrrrrf/gwa):** Uses the General Web App (GWA) template structure for a robust SvelteKit foundation.
+- **Data-Driven Content:** Manage all CV information (name, title, contact, profile, skills,
+  projects, education, languages) from a single, type-safe TypeScript store
+  (`src/lib/stores/cvData.svelte.ts`).
+- **Component-Based Structure:** Each section of the CV (Header, Profile, Skills, Projects,
+  etc.) is a reusable Svelte component.
+- **Modern Styling with TailwindCSS:** Utilizes TailwindCSS for a utility-first approach to
+  styling, ensuring a clean and professional look.
+- **Print-Optimized Output:** Generates a CV that is well-formatted for printing, including
+  considerations for A4 paper and printer-friendly styles.
+- **Svelte 5 & Runes:** Built with the latest Svelte 5 features for optimal reactivity and
+  component architecture.
+- **TypeScript Integration:** Full type safety for CV data, ensuring consistency and easier
+  refactoring.
+- **Easy to Customize & Extend:** The data store structure and component design make it simple
+  to add new sections or modify existing ones.
+- **Based on [GWA Template](https://github.com/Yrrrrrf/gwa):** Uses the General Web App (GWA)
+  template structure for a robust SvelteKit foundation.
 
 ## 🛠️ Technology Stack
 
 ### Frontend & CV Logic
 
--   **[SvelteKit](https://kit.svelte.dev/)** - Full-stack Svelte framework.
--   **[Svelte 5](https://svelte.dev/blog/runes)** - Latest Svelte version featuring Runes.
--   **[TypeScript](https://www.typescriptlang.org/)** - Adds static types to JavaScript.
--   **[Lucide Svelte](https://lucide.dev/guide/packages/lucide-svelte)** - SVG icons for contact details.
+- **[SvelteKit](https://kit.svelte.dev/)** - Full-stack Svelte framework.
+- **[Svelte 5](https://svelte.dev/blog/runes)** - Latest Svelte version featuring Runes.
+- **[TypeScript](https://www.typescriptlang.org/)** - Adds static types to JavaScript.
+- **[Lucide Svelte](https://lucide.dev/guide/packages/lucide-svelte)** - SVG icons for contact
+  details.
 
 ### Styling
 
--   **[TailwindCSS](https://tailwindcss.com/)** - Utility-first CSS framework.
+- **[TailwindCSS](https://tailwindcss.com/)** - Utility-first CSS framework.
 
 ### Development & Build
 
--   **[Vite](https://vitejs.dev/)** - Frontend tooling for fast development and optimized builds.
--   **[Deno](https://deno.land/)** (if using GWA's Deno setup) or **[Node.js](https://nodejs.org/)** - JavaScript runtime environment.
+- **[Vite](https://vitejs.dev/)** - Frontend tooling for fast development and optimized builds.
+- **[Deno](https://deno.land/)** (if using GWA's Deno setup) or
+  **[Node.js](https://nodejs.org/)** - JavaScript runtime environment.
 
 ## 🚦 Getting Started
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) (LTS version, e.g., >=18.x) or [Deno](https://deno.land/) (if applicable)
--   [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), or [yarn](https://classic.yarnpkg.com/) (if using Node.js)
+- [Node.js](https://nodejs.org/) (LTS version, e.g., >=18.x) or [Deno](https://deno.land/) (if
+  applicable)
+- [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), or
+  [yarn](https://classic.yarnpkg.com/) (if using Node.js)
 
 ### Quick Start
 
@@ -84,26 +103,37 @@ npm run preview
 
 The core of this generator is its data-driven nature. To update your CV:
 
-1.  **Edit [`src/lib/stores/cvData.svelte.ts`](src/lib/stores/cvData.svelte.ts):**
-    *   This is the **main configuration file** for all your CV content.
-    *   Update the `cv` object within `CvDataStore`.
-    *   Modify fields in `header`, `profile`, `skills`, `projects`, `education`, and `languages` with your personal information.
-    *   The types for each data structure are defined within this file (e.g., `HeaderData`, `ProjectEntry`). Ensure your data conforms to these types.
-    *   For icons (e.g., contact links), ensure they are imported from [`lucide-svelte`](https://lucide.dev/guide/packages/lucide-svelte) and potentially wrapped with the `createIcon` helper if you use it.
+1. **Edit [`src/lib/stores/cvData.svelte.ts`](src/lib/stores/cvData.svelte.ts):**
+   - This is the **main configuration file** for all your CV content.
+   - Update the `cv` object within `CvDataStore`.
+   - Modify fields in `header`, `profile`, `skills`, `projects`, `education`, and `languages`
+     with your personal information.
+   - The types for each data structure are defined within this file (e.g., `HeaderData`,
+     `ProjectEntry`). Ensure your data conforms to these types.
+   - For icons (e.g., contact links), ensure they are imported from
+     [`lucide-svelte`](https://lucide.dev/guide/packages/lucide-svelte) and potentially wrapped
+     with the `createIcon` helper if you use it.
 
-2.  **Static Assets (Profile Photo):**
-    *   Place your profile photo (e.g., [`generic-male.jpeg`](static/images/generic-male.jpeg)) in the [`static/images/`](static/images/) directory.
-    *   Ensure the path in `cvData.svelte.ts` (e.g., `header.profileImage: "/images/generic-male.jpeg"`) correctly points to this image.
+2. **Static Assets (Profile Photo):**
+   - Place your profile photo (e.g., [`generic-male.jpeg`](static/images/generic-male.jpeg)) in
+     the [`static/images/`](static/images/) directory.
+   - Ensure the path in `cvData.svelte.ts` (e.g.,
+     `header.profileImage: "/images/generic-male.jpeg"`) correctly points to this image.
 
-3.  **Styling (Optional):**
-    *   **Global Styles:** Modify [`src/app.html`](src/app.html) for global HTML attributes or [`src/global.css`](src/global.css) (if you create one beyond Tailwind's base) for CSS overrides.
-    *   **TailwindCSS:** Adjust utility classes directly within Svelte components ([`src/lib/components/*.svelte`](src/lib/components/)) or in [`src/routes/+page.svelte`](src/routes/+page.svelte) for layout and print-specific styles.
-    *   **Print Styles:** Fine-tune print-specific CSS within the `<style lang="postcss">` block in [`src/routes/+page.svelte`](src/routes/+page.svelte).
+3. **Styling (Optional):**
+   - **Global Styles:** Modify [`src/app.html`](src/app.html) for global HTML attributes or
+     [`src/global.css`](src/global.css) (if you create one beyond Tailwind's base) for CSS
+     overrides.
+   - **TailwindCSS:** Adjust utility classes directly within Svelte components
+     ([`src/lib/components/*.svelte`](src/lib/components/)) or in
+     [`src/routes/+page.svelte`](src/routes/+page.svelte) for layout and print-specific styles.
+   - **Print Styles:** Fine-tune print-specific CSS within the `<style lang="postcss">` block in
+     [`src/routes/+page.svelte`](src/routes/+page.svelte).
 
-## Visual [Example](examples/cv-generic-male.pdf)
+## [Example](examples/cv-generic-male.pdf)
 
 <div align="center">
-  <img src="./static/generic-example.png" alt="Generic CV Example" width="600">
+  <img src="./static/images/generic-example.png" alt="Generic CV Example" width="600">
 </div>
 
 ## 📄 License

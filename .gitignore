@@ -1,3 +1,7 @@
+# some stuff...
+profile-photo.jpg
+cv.**.ts
+
 node_modules
 
 # Output
@@ -19,8 +23,10 @@ Thumbs.db
 !.env.test
 
 # Vite
+.vite/
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-profile-photo.jpg
-me-*
+# project specific
+!cv.content.ts
+deno.lock

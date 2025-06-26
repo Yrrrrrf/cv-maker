@@ -2,7 +2,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { Sparkles } from '@lucide/svelte';
-    import { aiCvGeneratorStore } from '$lib/stores/aiCvGeneratorStore.svelte';
+    import { aiCvGeneratorStore } from '$lib/stores/aiCvGenerator.svelte';
 
     // Import step components
     import Step1_ProfileSources from './ProfileSources.svelte';

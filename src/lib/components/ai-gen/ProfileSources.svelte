@@ -1,7 +1,8 @@
 <!-- src/lib/components/ai-gen/ProfileSources.svelte -->
 <script lang="ts">
     import { PlusCircle, MinusCircle, User } from '@lucide/svelte';
-    import { aiCvGeneratorStore, type ProfileSource, type ProfileSourceType, profileOptionsList, type ProfileOptionConfig } from '$lib/stores/aiCvGeneratorStore.svelte';
+    import { aiCvGeneratorStore, profileOptionsList } from '$lib/stores/aiCvGenerator.svelte';
+    import type { ProfileSourceType } from '$lib/stores/aiCvGenerator.svelte';
 
     const store = aiCvGeneratorStore;
     let sources = $derived(store.state.profileSources);

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { HeaderData, ContactLink } from '$lib/stores/cvData.svelte.ts';
+    import type { HeaderData, ContactLink } from '$lib/types/cv';
     // Fallback icon, not directly used if data provides icons
     // import { Image as ImageIcon } from 'lucide-svelte';
 

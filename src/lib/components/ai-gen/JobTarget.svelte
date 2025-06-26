@@ -1,7 +1,7 @@
 <!-- src/lib/components/ai-gen/JobTarget.svelte -->
 <script lang="ts">
     import { Briefcase, Link as LinkIcon, FileText } from '@lucide/svelte';
-    import { aiCvGeneratorStore, type JobInputType } from '$lib/stores/aiCvGeneratorStore.svelte';
+    import { aiCvGeneratorStore, type JobInputType } from '$lib/stores/aiCvGenerator.svelte';
 
     const store = aiCvGeneratorStore;
     let jobInputType = $derived(store.state.jobInputType);

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { EducationData, EducationEntry } from '$lib/stores/cvData.svelte.ts';
+    import type { EducationData } from '$lib/types/cv';
     let { data }: { data: EducationData } = $props();
 </script>
 

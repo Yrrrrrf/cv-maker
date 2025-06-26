@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { SkillsData, SkillCategory } from '$lib/stores/cvData.svelte.ts';
+    import type { SkillsData } from '$lib/types/cv';
     let { data }: { data: SkillsData } = $props();
 </script>
 

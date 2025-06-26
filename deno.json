@@ -1,0 +1,51 @@
+{
+	"name": "@yrrrrrf/cv-maker",
+	"version": "0.0.1",
+	"exports": "./src/app.html",
+	"tasks": {
+		"dev": "deno run --allow-all npm:vite dev",
+		"build": "deno run --allow-all npm:vite build",
+		"preview": "deno run --allow-all npm:vite preview"
+	},
+	"type": "module",
+	"imports": {
+		"svelte": "npm:svelte@^5.0.0",
+		"svelte-check": "npm:svelte-check@^4.0.0",
+		"@sveltejs/kit": "npm:@sveltejs/kit@^2.16.0",
+		"@sveltejs/vite-plugin-svelte": "npm:@sveltejs/vite-plugin-svelte@^5.0.0",
+		"@sveltejs/adapter-static": "npm:@sveltejs/adapter-static@^3.0.8",
+		"vite": "npm:vite@^7.0.0",
+		"tailwindcss": "npm:tailwindcss@^4.0.0",
+		"@tailwindcss/vite": "npm:@tailwindcss/vite@^4.0.0",
+		"@lucide/svelte": "npm:@lucide/svelte@^0.511.0"
+	},
+	"compilerOptions": {
+		"strict": true,
+		"lib": ["dom", "dom.iterable", "es6"],
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "bundler",
+		"target": "esnext",
+		"module": "esnext"
+	},
+	"lint": {
+		"include": ["src/"],
+		"exclude": [
+			"node_modules/",
+			".svelte-kit/",
+			".vite/"
+		],
+		"rules": {
+			"tags": ["recommended"]
+		}
+	},
+	"fmt": {
+		"indentWidth": 4,
+		"useTabs": true,
+		"singleQuote": false,
+		"lineWidth": 96
+	},
+	"nodeModulesDir": "auto"
+}
