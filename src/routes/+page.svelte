@@ -31,11 +31,13 @@
 
     import { m } from '../paraglide/messages.js';
 
-
-    let message = m.example_message({ username: "Yrrrrrf" });
+    let message = m.example_message({ username: "Yrrrrrf"  }, {locale: "de"});
 
     console.log(message);
 
+    console.log(
+        m.example_message({ username: "Yrrrrrf" })
+    );
 
 </script>
 
