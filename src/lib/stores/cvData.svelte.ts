@@ -2,7 +2,9 @@
 // This file creates and exports the reactive Svelte store.
 // It imports the data structure (types) and the content, then combines them.
 
-import { cvContent } from "../data/cv.content";
+// import { cvContent } from "../data/cv.content";
+// import { cvContent } from "../data/cv.web";
+import { cvContent } from "../data/cv.daimler";
 import type { CVData } from "../types/cv";
 
 class CvDataStore {
