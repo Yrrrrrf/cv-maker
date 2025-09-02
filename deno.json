@@ -23,12 +23,7 @@
 		"strict": true,
 		"lib": ["dom", "dom.iterable", "es6"],
 		"allowJs": true,
-		"checkJs": true,
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "bundler",
-		"target": "esnext",
-		"module": "esnext"
+		"checkJs": true
 	},
 	"lint": {
 		"include": ["src/"],

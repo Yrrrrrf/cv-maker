@@ -29,6 +29,14 @@
         };
     });
 
+    import { m } from '../paraglide/messages.js';
+
+
+    let message = m.example_message({ username: "Yrrrrrf" });
+
+    console.log(message);
+
+
 </script>
 
 <svelte:head>
