@@ -1,0 +1,10 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "example_message": "こんにちは {username}",
+  "education_title": "教育",
+  "languages_title": "言語",
+  "profile_title": "職務経歴書",
+  "projects_title": "主なプロジェクト",
+  "projects_github": "GitHub",
+  "skills_title": "技術スキル"
+}

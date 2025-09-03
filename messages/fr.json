@@ -1,0 +1,10 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "example_message": "Bonjour le monde {username}",
+  "education_title": "ÉDUCATION",
+  "languages_title": "LANGUES",
+  "profile_title": "PROFIL PROFESSIONNEL",
+  "projects_title": "PROJETS PRINCIPAUX",
+  "projects_github": "GitHub",
+  "skills_title": "COMPÉTENCES TECHNIQUES"
+}

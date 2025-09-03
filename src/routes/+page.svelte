@@ -29,15 +29,9 @@
         };
     });
 
-    import { m } from '../paraglide/messages.js';
     import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 
-    // get some greeting message...
-    let message = m.example_message({ username: "Yrrrrrf"  });
-
 </script>
-
-{message}
 
 <LanguageSwitcher />
 
