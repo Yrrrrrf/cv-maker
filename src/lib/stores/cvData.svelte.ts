@@ -7,6 +7,15 @@
 import { cvContent } from "../data/cv.daimler";
 import type { CVData } from "../types/cv";
 
+// import { setLocale } from '../../paraglide/runtime.js';
+
+// // changing this will change the language of the message!
+// setLocale("de"); // set the default language!
+
+
+
+
+
 class CvDataStore {
 	/**
 	 * The main reactive state object for the CV.

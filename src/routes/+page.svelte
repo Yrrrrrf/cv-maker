@@ -30,17 +30,16 @@
     });
 
     import { m } from '../paraglide/messages.js';
+    import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 
-    import { setLocale } from '../paraglide/runtime.js';
-
-
+    // get some greeting message...
     let message = m.example_message({ username: "Yrrrrrf"  });
-
-    setLocale("de");
 
 </script>
 
 {message}
+
+<LanguageSwitcher />
 
 <svelte:head>
 	<title>{cv.siteTitle}</title>
