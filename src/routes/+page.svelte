@@ -31,15 +31,16 @@
 
     import { m } from '../paraglide/messages.js';
 
-    let message = m.example_message({ username: "Yrrrrrf"  }, {locale: "de"});
+    import { setLocale } from '../paraglide/runtime.js';
 
-    console.log(message);
 
-    console.log(
-        m.example_message({ username: "Yrrrrrf" })
-    );
+    let message = m.example_message({ username: "Yrrrrrf"  });
+
+    setLocale("de");
 
 </script>
+
+{message}
 
 <svelte:head>
 	<title>{cv.siteTitle}</title>
