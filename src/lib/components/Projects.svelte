@@ -1,11 +1,12 @@
 <script lang="ts">
     import type { ProjectsData } from '$lib/types/cv';
     import { Github, ExternalLink } from '@lucide/svelte';
+    import { m } from '../../paraglide/messages';
     let { data }: { data: ProjectsData } = $props();
 </script>
 
 <section class="mb-6 print:mb-3">
-    <h3 class="text-xl font-bold text-gray-800 border-b-2 border-blue-600 inline-block mb-3 print:text-base print:mb-1.5">PROYECTOS DESTACADOS</h3>
+    <h3 class="text-xl font-bold text-gray-800 border-b-2 border-blue-600 inline-block mb-3 print:text-base print:mb-1.5">{m.projects_title()}</h3>
     <div class="space-y-6 print:space-y-3">
         {#each data.projects as project (project.title)}
             <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100 print:p-2 print:shadow-none">
@@ -27,7 +28,7 @@
                     {#if project.githubUrl}
                         <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition-colors bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-full text-xs print:hidden">
                             <Github size={14} />
-                            <span>GitHub</span>
+                            <span>{m.projects_github()}</span>
                         </a>
                     {/if}
                 </div>

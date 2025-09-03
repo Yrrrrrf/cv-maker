@@ -1,4 +1,10 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "example_message": "Guten Tag {username}"
+  "example_message": "Guten Tag {username}",
+  "education_title": "BILDUNG",
+  "languages_title": "SPRACHEN",
+  "profile_title": "BERUFSPROFIL",
+  "projects_title": "AUSGEWÄHLTE PROJEKTE",
+  "projects_github": "GitHub",
+  "skills_title": "TECHNISCHE FÄHIGKEITEN"
 }

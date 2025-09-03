@@ -1,4 +1,10 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "example_message": "Hello world {username}"
+  "example_message": "Hello world {username}",
+  "education_title": "EDUCATION",
+  "languages_title": "LANGUAGES",
+  "profile_title": "PROFESSIONAL PROFILE",
+  "projects_title": "FEATURED PROJECTS",
+  "projects_github": "GitHub",
+  "skills_title": "TECHNICAL SKILLS"
 }

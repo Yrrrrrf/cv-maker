@@ -1,10 +1,11 @@
 <script lang="ts">
     import type { LanguagesData } from '$lib/types/cv';
+    import { m } from '../../paraglide/messages';
     let { data }: { data: LanguagesData } = $props();
 </script>
 
 <section class="mb-6 print:mb-3">
-    <h3 class="text-xl font-bold text-gray-800 border-b-2 border-blue-600 inline-block mb-3 print:text-base print:mb-1.5">IDIOMAS</h3>
+    <h3 class="text-xl font-bold text-gray-800 border-b-2 border-blue-600 inline-block mb-3 print:text-base print:mb-1.5">{m.languages_title()}</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 print:gap-2">
         {#each data.entries as entry (entry.language)}
             <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100 print:p-2 print:shadow-none">

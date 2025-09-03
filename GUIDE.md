@@ -68,50 +68,7 @@
 
 The implementation will be executed in three distinct phases to ensure a structured and verifiable workflow. All package management and script execution will be performed using the **Deno runtime**, in accordance with the project's existing setup in `deno.json`.
 
-### **Phase 1: Foundational Setup & Proof of Concept**
-
-**Goal:** Integrate the Inlang ecosystem into the SvelteKit project and verify its core functionality with a single, isolated component.
-
--   **Deliverables:**
-    1.  A fully configured Inlang project ready for message migration.
-    2.  A single component (`Profile.svelte`) successfully displaying a translated string.
-    3.  Updated Deno task runner with i18n-related commands.
-
--   **Tasks:**
-    1.  **Install Dependencies:** Using Deno, add the Inlang CLI (`@inlang/cli`) as a dev dependency and the SvelteKit SDK (`@inlang/sdk-js`) to the project's `deno.json`.
-    2.  **Initialize Inlang Project:** Use the Inlang CLI (`deno task inlang ...`) to generate the `project.inlang.json` configuration file in the project root.
-    3.  **Create Message Files:**
-        -   Create the `messages/` directory.
-        -   Create `messages/en.json` and add a proof-of-concept key: `{"cv.section.profile": "Professional Profile"}`.
-        -   Create `messages/es.json` and add the corresponding key: `{"cv.section.profile": "Perfil Profesional"}`.
-    4.  **Integrate SvelteKit SDK:**
-        -   Create a new `src/routes/+layout.ts` file to initialize the Inlang runtime.
-        -   Create the helper module at `src/lib/i18n/index.ts` to export the compiled Inlang functions (like `i` and `language`).
-    5.  **Proof-of-Concept Refactor:**
-        -   Modify `src/lib/components/Profile.svelte` to import the `i` function from the new helper module.
-        -   Replace the hard-coded `<h3>PERFIL PROFESIONAL</h3>` with `{i('cv.section.profile')}`.
-    6.  **Verify:** Run the development server (`deno task dev`) and confirm that the "Professional Profile" heading renders correctly and changes when the language is manually switched (e.g., via a URL parameter `?lang=es`).
-
----
-
-### **Phase 2: Full Content Migration & Component Refactoring**
-
-**Goal:** Eliminate all hard-coded strings from the application, making the Inlang message files the single source of truth for all user-facing text.
-
--   **Deliverables:**
-    1.  Fully populated `en.json` and `es.json` message files.
-    2.  All Svelte components refactored to use the `i()` translation function.
-    3.  The `cv.content.ts` data file updated to use translation keys instead of literal strings.
-
--   **Tasks:**
-    1.  **Populate Message Files:** Systematically go through the entire application and migrate every user-facing string into `en.json` and `es.json`. This includes:
-        -   All component headers (`Skills`, `Projects`, `Education`, `Languages`).
-        -   All content from `src/data/cv.content.ts` (profile summaries, project descriptions, skill names, degrees, etc.).
-    2.  **Refactor All Components:** Update every component in `src/lib/components/` to import and use the `i()` function for all text.
-    3.  **Update Data Store:** Modify `src/data/cv.content.ts` so that its string properties now hold the corresponding Inlang message keys (e.g., `summary: 'cv.profile.summary'`). The components will then use these keys with the `i()` function.
-    4.  **Verify:** Thoroughly test the application in both English and Spanish to ensure all content is displayed correctly and no hard-coded strings remain.
-
----
+### Phases 1 & 2 already completed
 
 ### **Phase 3: Language Switching Mechanism & Finalization**
 
